@@ -1,6 +1,14 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
-main() => runApp(ToDoApp());
+main(){
+  WidgetsFlutterBinding.ensureInitialized();
+
+  runApp(ToDoApp());
+}
 
 class ToDoApp extends StatefulWidget {
   const ToDoApp({Key? key}) : super(key: key);
@@ -20,6 +28,7 @@ class _ToDoAppState extends State<ToDoApp>{
             controller: textController,
           ),
         ),
+
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.save),
           onPressed: (){
@@ -31,21 +40,5 @@ class _ToDoAppState extends State<ToDoApp>{
   }
 }
 
-class ToDo {
-  final int? id;
-  final String list;
 
-  ToDo({this.id, required this.list});
 
-  factory ToDo.fromMap(Map<String, dynamic> json)=> new ToDo(
-    id: json['id'],
-    list: json['list'],
-  );
-
-  Map<String, dynamic> toMap(){
-    return{
-      'id': id,
-      'list': list,
-    };
-  }
-}
