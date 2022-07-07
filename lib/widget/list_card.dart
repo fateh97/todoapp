@@ -37,9 +37,33 @@ class ListCardWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              time,
-              style: TextStyle(color: Colors.grey.shade700),
+            Row(
+              children: [
+                Text(
+                  time,
+                  style: TextStyle(color: Colors.grey.shade700),
+                ),
+                IconButton(icon: Icon(Icons.approval), onPressed: (){
+                    showDialog(
+                      barrierDismissible: true,
+                      context: context,
+                      builder: (BuildContext context){
+                        return AlertDialog(
+                          title: Row(
+                            children: [
+                              const Text("Completed"),
+                            ],
+                          ),
+                          actions: [
+                            TextButton(onPressed: () {
+                              Navigator.pop(context);
+                            }, child: Text("Okay"))
+                          ],
+                        );
+                      },
+                  );
+                },)
+              ],
             ),
             SizedBox(height: 4),
             Text(

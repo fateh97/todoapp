@@ -90,7 +90,6 @@ class _EditListPageState extends State<EditListPage> {
       list: list,
       description: description,
     );
-
     await ListDatabase.instance.update(listnote);
   }
 
