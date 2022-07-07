@@ -2,12 +2,12 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:todoapp/model/list.dart';
 
-class ListToDo {
-  static final ListToDo instance = ListToDo._init();
+class ListDatabase {
+  static final ListDatabase instance = ListDatabase._init();
 
   static Database? _database;
 
-  ListToDo._init();
+  ListDatabase._init();
 
   Future<Database> get database async {
     if(_database != null) return _database!;
@@ -27,16 +27,15 @@ class ListToDo {
     final idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
     final textType = 'TEXT NOT NULL';
     final boolType = 'BOOLEAN NOT NULL';
+    final integerType = 'INTEGER NOT NULL';
 
-    await db.execute('''
-    CREATE TABLE $tableList (
+    await db.execute('''CREATE TABLE $tableList (
     ${ListFields.id} $idType,
     ${ListFields.list} $textType,
     ${ListFields.description} $textType,
     ${ListFields.time} $textType,
-    ${ListFields.completed} $boolType
-     )
-    ''');
+    ${ListFields.completed} $boolType,
+    ${ListFields.number} $integerType)''');
   }
 
   Future<ToDo> create(ToDo todo) async{
@@ -70,7 +69,24 @@ class ListToDo {
   //   }
   // }
 
-  Future<List<ToDo>> readAllList() async {
+  Future<ToDo> readList(int id) async {
+    final db = await instance.database;
+
+    final maps = await db.query(
+      tableList,
+      columns: ListFields.values,
+      where: '${ListFields.id} = ?',
+      whereArgs: [id],
+    );
+
+    if (maps.isNotEmpty) {
+      return ToDo.fromJson(maps.first);
+    } else {
+      throw Exception('ID $id not found');
+    }
+  }
+
+    Future<List<ToDo>> readAllList() async {
     final db = await instance.database;
 
     final orderTime = '${ListFields.time} ASC';
