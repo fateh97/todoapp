@@ -1,44 +1,37 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:flutter/services.dart';
+import 'package:todoapp/pages/list_pages.dart';
 
-main(){
+Future main() async{
   WidgetsFlutterBinding.ensureInitialized();
-
-  runApp(ToDoApp());
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  runApp(MyApp());
 }
 
-class ToDoApp extends StatefulWidget {
-  const ToDoApp({Key? key}) : super(key: key);
-  @override
-  _ToDoAppState createState() => _ToDoAppState();
-}
-
-class _ToDoAppState extends State<ToDoApp>{
-  final textController = TextEditingController();
+class MyApp extends StatelessWidget {
+  static final String title = 'To Do List';
 
   @override
-  Widget build(BuildContext context){
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: TextField(
-            controller: textController,
-          ),
-        ),
+  Widget build(BuildContext context) => MaterialApp(
+    debugShowCheckedModeBanner: false,
+    title: title,
+    themeMode: ThemeMode.dark,
+    theme: ThemeData(
+      primaryColor: Colors.black,
+      scaffoldBackgroundColor: Colors.blueGrey.shade900,
+      appBarTheme: AppBarTheme(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+    ),
+    home: ToDoPage(),
+  );
 
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.save),
-          onPressed: (){
-            print(textController.text);
-          },
-        ),
-        ),
-    );
-  }
 }
+
 
 
 
